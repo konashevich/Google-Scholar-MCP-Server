@@ -1,0 +1,108 @@
+╔════════════════════════════════════════════════════════════════╗
+║     Google Scholar MCP Server - Quick Reference Card          ║
+╚════════════════════════════════════════════════════════════════╝
+
+📦 DEPLOYMENT (Choose one)
+──────────────────────────────────────────────────────────────────
+  Automated:     ./setup-network-server.sh
+  Manual:        docker compose up -d
+
+🔄 MANAGEMENT
+──────────────────────────────────────────────────────────────────
+  Start:         docker compose up -d
+  Stop:          docker compose down
+  Restart:       docker compose restart
+  Logs:          docker compose logs -f
+  Status:        docker compose ps
+
+🧪 TESTING
+──────────────────────────────────────────────────────────────────
+  Full Test:     ./test-network.sh
+  Health Check:  ./health_check.py
+  Manual Test:   curl http://localhost:3847/health
+
+🌐 ACCESS URLs
+──────────────────────────────────────────────────────────────────
+  Local:         http://localhost:3847
+  Network:       http://YOUR_IP:3847
+  Health:        http://YOUR_IP:3847/health
+  SSE Endpoint:  http://YOUR_IP:3847/sse
+
+🔧 SYSTEMD SERVICE (Optional)
+──────────────────────────────────────────────────────────────────
+  Enable:        sudo systemctl enable google-scholar-mcp.service
+  Start:         sudo systemctl start google-scholar-mcp.service
+  Status:        sudo systemctl status google-scholar-mcp.service
+  Logs:          sudo journalctl -u google-scholar-mcp.service -f
+
+🔥 FIREWALL
+──────────────────────────────────────────────────────────────────
+  UFW:           sudo ufw allow 3847/tcp && sudo ufw reload
+  firewalld:     sudo firewall-cmd --permanent --add-port=3847/tcp
+                 sudo firewall-cmd --reload
+
+🔍 TROUBLESHOOTING
+──────────────────────────────────────────────────────────────────
+  Container:     docker ps | grep google-scholar-mcp
+  Logs:          docker compose logs --tail=50
+  Port Check:    sudo netstat -tlnp | grep 3847
+  IP Address:    hostname -I
+
+🖥️  MCP CLIENT CONFIGURATION
+──────────────────────────────────────────────────────────────────
+  Claude Desktop:
+    Add to ~/.config/claude-desktop/config.json:
+    {
+      "mcpServers": {
+        "google-scholar": {
+          "url": "http://YOUR_SERVER_IP:3847/sse"
+        }
+      }
+    }
+
+  Cursor:
+    Settings → MCP → Add new server:
+    {
+      "url": "http://YOUR_SERVER_IP:3847/sse"
+    }
+
+📚 DOCUMENTATION
+──────────────────────────────────────────────────────────────────
+  Deployment:    NETWORK_DEPLOYMENT.md
+  Docker:        README.Docker.md
+  Main:          README.md
+
+🛡️  SECURITY NOTES
+──────────────────────────────────────────────────────────────────
+  ⚠️  No authentication - for trusted networks only
+  ⚠️  Binds to all interfaces (0.0.0.0)
+  ✅  Runs as non-root user (mcpuser)
+  ✅  Health checks enabled
+
+📁 KEY FILES
+──────────────────────────────────────────────────────────────────
+  Dockerfile                  - Container definition
+  docker compose.yml          - Orchestration config
+  google-scholar-mcp.service  - Systemd service
+  setup-network-server.sh     - Automated setup
+  test-network.sh             - Connectivity tests
+  health_check.py             - Health check script
+
+🚀 FIRST TIME SETUP
+──────────────────────────────────────────────────────────────────
+  1. Run:     ./setup-network-server.sh
+  2. Test:    ./test-network.sh
+  3. Note your server IP address
+  4. Configure firewall if needed
+  5. Configure MCP clients
+  6. Reboot to test auto-start
+
+💡 PRO TIPS
+──────────────────────────────────────────────────────────────────
+  • Use static IP for easier client configuration
+  • Check logs regularly: docker compose logs -f
+  • Test after reboot to verify auto-start
+  • Keep firewall rules updated
+  • Monitor disk space for logs
+
+═══════════════════════════════════════════════════════════════════

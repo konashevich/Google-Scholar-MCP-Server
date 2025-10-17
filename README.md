@@ -10,8 +10,32 @@ The Google Scholar MCP Server provides a bridge between AI assistants and Google
 - 🚀 Efficient Retrieval: Fast access to paper metadata ✅
 - 👤 Author Information: Retrieve detailed information about authors ✅
 - 📊 Research Support: Facilitate academic research and analysis ✅
+- 🐳 Docker Support: Run as a network-accessible server with auto-start on reboot ✅
 
 ## 🚀 Quick Start
+
+### 🐳 Docker Network Server (Recommended for Home Network)
+
+Run the MCP server as a network-accessible service that starts automatically on reboot:
+
+```bash
+# Quick automated setup
+chmod +x setup-network-server.sh
+./setup-network-server.sh
+
+# Or manual setup
+docker-compose up -d
+```
+
+The server will be accessible at `http://YOUR_IP:3847` from any computer on your network.
+
+**Features:**
+- ✅ Automatically starts on system reboot
+- ✅ Accessible from other computers on your network
+- ✅ Health monitoring and auto-restart
+- ✅ Persistent logs
+
+See [README.Docker.md](README.Docker.md) for detailed Docker documentation.
 
 ### Installing Manually
 ### Installing via Smithery

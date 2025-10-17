@@ -1,0 +1,31 @@
+services:
+  google-scholar-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: google-scholar-mcp-server:latest
+    container_name: google-scholar-mcp-server
+    restart: always  # Always restart on reboot
+    
+    # Expose ports for network access
+    ports:
+      - "3847:3847"  # Map host port 3847 to container port 3847
+    
+    # Environment variables
+    environment:
+      - PYTHONUNBUFFERED=1
+    
+    # Mount volumes for persistent logs
+    volumes:
+      - ./logs:/app/logs
+    
+    # Network configuration for home network access
+    network_mode: bridge
+    
+    # Health check to ensure service is running (TCP probe works with SSE)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket,sys; s=socket.socket(); s.settimeout(3);\ntry:\n s.connect(('127.0.0.1',3847)); s.close(); sys.exit(0)\nexcept Exception:\n sys.exit(1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
